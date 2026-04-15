@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= tituloAba %></title>
+</head>
+<body>
+ 
+    <h1><%= tituloPagina %></h1>
+ 
+    <% if (erros && erros.length) { %>
+        <div style="border:1px solid #cc0000; padding:10px; margin-bottom:15px;">
+            <strong>Corrija os campos abaixo:</strong>
+            <ul>
+                <% erros.forEach((erro) => { %>
+                    <li><%= erro.msg %></li>
+                <% }) %>
+            </ul>
+        </div>
+    <% } %>
+ 
+    <form action="<%= Number(id_tarefa) > 0 ? '/editar' : '/nova-tarefa' %>" method="post">
+ 
+        <input type="hidden" name="id_tarefa" id="id_tarefa" value="<%= id_tarefa %>">
+ 
+        <label for="tarefa">Tarefa:</label> <br>
+        <textarea name="tarefa" id="tarefa"><%= tarefa.nome_tarefa %></textarea> <br>
+ 
+        <label for="prazo">Prazo:</label> <br>
+        <input type="date" name="prazo" id="prazo"
+            value="<%= tarefa.prazo_tarefa ? moment(tarefa.prazo_tarefa).format('YYYY-MM-DD') : '' %>">
+        <br>
+ 
+        <label for="situacao">Situação:</label> <br>
+        <%
+            let selecionado = ["","","","",""];
+            selecionado[Number(tarefa.situacao_tarefa ?? 1)] = "selected";
+        %>
+        <select name="situacao" id="situacao">
+            <option <%= selecionado[0] %> value="0">Cancelada</option>
+            <option <%= selecionado[1] %> value="1">Pendente</option>
+            <option <%= selecionado[2] %> value="2">Iniciada</option>
+            <option <%= selecionado[3] %> value="3">Finalizada</option>
+            <option <%= selecionado[4] %> value="4">Atrasada</option>
+        </select> <br><br>
+ 
+        <button type="submit">Salvar</button>
+    </form>
+ 
+</body>
+</html>
+ 
+cadastro.ejs
+ 
